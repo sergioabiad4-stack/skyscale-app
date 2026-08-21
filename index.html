@@ -295,6 +295,23 @@ async function callAI(prompt){
   return data.content||'';
 }
 
+async function downloadFile(endpoint, payload, label){
+  const res=await fetch(endpoint,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload)
+  });
+  if(!res.ok){const e=await res.json().catch(()=>({error:'Server error'}));throw new Error(e.error||'Server error');}
+  const blob=await res.blob();
+  const disposition=res.headers.get('Content-Disposition')||'';
+  const match=disposition.match(/filename="([^"]+)"/);
+  const filename=match?match[1]:label;
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=filename; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),5000);
+  return filename;
+}
+
 function buildPrompt(mode,text,client){
   const today=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
   const driveNote='Note: No live Drive connection in standalone mode. Reference relevant Skyscale file types for this client where applicable.';
@@ -341,11 +358,27 @@ async function sendMessage(){
   ],
   async()=>{
     isThinking=true;document.getElementById('sendBtn').disabled=true;
-    appendThinking('Generating '+modeLabels[mode]+'…');
-    try{
-      const reply=await callAI(buildPrompt(mode,text,client));
-      removeThinking();appendOutputBlock(modeLabels[mode],client||'Skyscale',reply);
-    }catch(e){removeThinking();appendSimpleMsg('⚠ Error: '+esc(e.message));}
+    if(mode==='deck'){
+      appendThinking('Building PowerPoint deck…');
+      try{
+        const filename=await downloadFile('/api/deck',{prompt:text,client},`${client||'Skyscale'}_Deck.pptx`);
+        removeThinking();
+        appendSimpleMsg(`✅ Deck ready — <strong>${esc(filename)}</strong> downloaded to your device.`);
+      }catch(e){removeThinking();appendSimpleMsg('⚠ Error: '+esc(e.message));}
+    } else if(mode==='plan'){
+      appendThinking('Building Excel media plan…');
+      try{
+        const filename=await downloadFile('/api/plan',{prompt:text,client},`${client||'Skyscale'}_MediaPlan.xlsx`);
+        removeThinking();
+        appendSimpleMsg(`✅ Media plan ready — <strong>${esc(filename)}</strong> downloaded to your device.`);
+      }catch(e){removeThinking();appendSimpleMsg('⚠ Error: '+esc(e.message));}
+    } else {
+      appendThinking('Generating '+modeLabels[mode]+'…');
+      try{
+        const reply=await callAI(buildPrompt(mode,text,client));
+        removeThinking();appendOutputBlock(modeLabels[mode],client||'Skyscale',reply);
+      }catch(e){removeThinking();appendSimpleMsg('⚠ Error: '+esc(e.message));}
+    }
     isThinking=false;document.getElementById('sendBtn').disabled=false;input.focus();
   },
   ()=>{appendSimpleMsg('Cancelled.');isThinking=false;document.getElementById('sendBtn').disabled=false;updateBadge('chat');input.focus();}
