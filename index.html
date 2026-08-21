@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skyscale Intelligence Surface</title>
+<style>
+  :root {
+    --bg: #080a0f; --surface: #0d1017; --surface2: #131820;
+    --border: rgba(255,255,255,0.06); --border-active: rgba(255,255,255,0.15);
+    --sky: #00c2ff; --sky-dim: rgba(0,194,255,0.12); --sky-glow: rgba(0,194,255,0.04);
+    --gold: #f0c060; --gold-dim: rgba(240,192,96,0.1);
+    --text: #e8eaf0; --text-muted: rgba(232,234,240,0.45); --text-dim: rgba(232,234,240,0.25);
+    --green: #00e5a0; --red: #ff4d6d; --radius: 12px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,'Segoe UI',sans-serif; font-size:14px; height:100vh; display:flex; overflow:hidden; }
+
+  /* SIDEBAR */
+  .sidebar { width:240px; min-width:240px; background:var(--surface); border-right:1px solid var(--border); display:flex; flex-direction:column; padding:20px 0; }
+  .logo { padding:0 18px 20px; border-bottom:1px solid var(--border); margin-bottom:18px; }
+  .logo-mark { font-weight:800; font-size:17px; letter-spacing:-0.02em; }
+  .logo-mark span { color:var(--sky); }
+  .logo-sub { font-family:monospace; font-size:9px; color:var(--text-dim); letter-spacing:0.12em; text-transform:uppercase; margin-top:3px; }
+  .sidebar-section { padding:0 10px; margin-bottom:22px; }
+  .sidebar-label { font-family:monospace; font-size:9px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); padding:0 8px; margin-bottom:6px; }
+  .cmd-btn { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; cursor:pointer; transition:all 0.15s; border:none; background:none; color:var(--text-muted); font-family:inherit; font-size:13px; width:100%; text-align:left; }
+  .cmd-btn:hover { background:var(--sky-glow); color:var(--text); }
+  .cmd-icon { font-family:monospace; font-size:9px; background:var(--surface2); padding:3px 6px; border-radius:4px; color:var(--sky); min-width:46px; text-align:center; letter-spacing:0.04em; flex-shrink:0; }
+  .client-chip { display:flex; align-items:center; gap:8px; padding:7px 10px; border-radius:8px; cursor:pointer; color:var(--text-muted); font-size:12.5px; transition:all 0.15s; }
+  .client-chip:hover { background:var(--sky-glow); color:var(--text); }
+  .client-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .dot-qa{background:#00c2ff} .dot-eta{background:#f0c060} .dot-et{background:#a78bfa} .dot-qrc{background:#00e5a0}
+
+  /* MAIN */
+  .main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+  .topbar { display:flex; align-items:center; justify-content:space-between; padding:14px 24px; border-bottom:1px solid var(--border); background:var(--surface); flex-shrink:0; }
+  .topbar-left { display:flex; align-items:center; gap:11px; }
+  .mode-badge { font-family:monospace; font-size:10px; padding:4px 10px; border-radius:20px; background:var(--sky-dim); color:var(--sky); border:1px solid rgba(0,194,255,0.2); text-transform:uppercase; letter-spacing:0.08em; transition:all 0.3s; }
+  .mode-badge.report{background:rgba(0,229,160,0.1);color:var(--green);border-color:rgba(0,229,160,0.2)}
+  .mode-badge.deck{background:rgba(240,192,96,0.1);color:var(--gold);border-color:rgba(240,192,96,0.2)}
+  .mode-badge.find{background:rgba(167,139,250,0.1);color:#a78bfa;border-color:rgba(167,139,250,0.2)}
+  .mode-badge.brief{background:rgba(255,77,109,0.1);color:#ff8fab;border-color:rgba(255,77,109,0.2)}
+  .topbar-title { font-weight:600; font-size:14px; }
+
+  /* CHAT */
+  .chat-area { flex:1; overflow-y:auto; padding:24px; display:flex; flex-direction:column; gap:18px; scroll-behavior:smooth; }
+  .chat-area::-webkit-scrollbar{width:4px} .chat-area::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
+
+  /* WELCOME */
+  .welcome { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:50px 40px; gap:18px; flex:1; min-height:400px; }
+  .welcome-orb { width:76px; height:76px; border-radius:50%; background:radial-gradient(circle at 35% 35%,rgba(0,194,255,0.4),rgba(0,194,255,0.05) 60%,transparent); border:1px solid rgba(0,194,255,0.2); display:flex; align-items:center; justify-content:center; font-size:26px; box-shadow:0 0 60px rgba(0,194,255,0.1); animation:float 4s ease-in-out infinite; }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .welcome h2{font-weight:700;font-size:24px;letter-spacing:-0.02em}
+  .welcome p{color:var(--text-muted);font-size:13.5px;max-width:400px;line-height:1.7}
+  .quick-cmds{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:6px}
+  .quick-cmd{font-family:monospace;font-size:10px;padding:6px 13px;border-radius:8px;border:1px solid var(--border-active);background:var(--surface2);color:var(--text-muted);cursor:pointer;transition:all 0.15s;letter-spacing:0.03em}
+  .quick-cmd:hover{border-color:var(--sky);color:var(--sky);background:var(--sky-dim)}
+
+  /* MESSAGES */
+  .msg-group{display:flex;flex-direction:column;gap:4px}
+  .msg{display:flex;gap:12px;max-width:820px}
+  .msg.user{flex-direction:row-reverse;align-self:flex-end}
+  .msg-avatar{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:10px;font-weight:500;flex-shrink:0}
+  .msg-avatar.ai{background:var(--sky-dim);color:var(--sky);border:1px solid rgba(0,194,255,0.2)}
+  .msg-avatar.user{background:var(--surface2);color:var(--text-muted);border:1px solid var(--border)}
+  .msg-bubble{padding:12px 16px;border-radius:var(--radius);font-size:13.5px;line-height:1.7;max-width:680px}
+  .msg.ai .msg-bubble{background:var(--surface2);border:1px solid var(--border);border-top-left-radius:4px}
+  .msg.user .msg-bubble{background:var(--sky-dim);border:1px solid rgba(0,194,255,0.15);border-top-right-radius:4px}
+  .msg-time{font-family:monospace;font-size:9px;color:var(--text-dim);padding:0 42px;letter-spacing:0.04em}
+  .msg.user+.msg-time{text-align:right}
+
+  /* OUTPUT BLOCK */
+  .output-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;max-width:720px}
+  .output-header{display:flex;align-items:center;justify-content:space-between;padding:11px 15px;border-bottom:1px solid var(--border);background:var(--surface2)}
+  .output-type{font-family:monospace;font-size:9px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--sky)}
+  .output-meta-row{display:flex;align-items:center;gap:8px}
+  .output-meta{font-family:monospace;font-size:9px;color:var(--text-dim);letter-spacing:0.06em}
+  .copy-btn{font-family:monospace;font-size:9px;padding:3px 9px;border:1px solid var(--border-active);border-radius:4px;background:none;color:var(--text-dim);cursor:pointer;transition:all 0.15s}
+  .copy-btn:hover{color:var(--sky);border-color:var(--sky)}
+  .output-body{padding:16px 18px;font-size:13px;line-height:1.75;color:var(--text);white-space:pre-wrap;max-height:480px;overflow-y:auto}
+  .output-body::-webkit-scrollbar{width:4px} .output-body::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
+
+  /* CONFIRM */
+  .confirm-block{background:var(--surface);border:1px solid rgba(0,194,255,0.2);border-radius:var(--radius);padding:14px 16px;max-width:680px}
+  .confirm-title{font-family:monospace;font-size:10px;font-weight:500;color:var(--sky);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px}
+  .confirm-item{font-size:12.5px;color:var(--text-muted);padding:2px 0}
+  .confirm-item::before{content:"→ ";color:var(--sky);opacity:0.6}
+  .confirm-actions{display:flex;gap:8px;margin-top:12px}
+  .btn-ok{font-family:monospace;font-size:10px;padding:7px 16px;border-radius:7px;border:1px solid var(--sky);background:var(--sky-dim);color:var(--sky);cursor:pointer;transition:all 0.15s}
+  .btn-ok:hover{background:rgba(0,194,255,0.25)}
+  .btn-no{font-family:monospace;font-size:10px;padding:7px 14px;border-radius:7px;border:1px solid var(--border);background:none;color:var(--text-muted);cursor:pointer;transition:all 0.15s}
+  .btn-no:hover{border-color:var(--border-active);color:var(--text)}
+
+  /* THINKING */
+  .thinking{display:flex;gap:12px;align-items:flex-start}
+  .thinking-step{font-family:monospace;font-size:11px;color:var(--text-dim);padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;gap:8px;letter-spacing:0.04em}
+  .spin{width:12px;height:12px;border:1.5px solid var(--border-active);border-top-color:var(--sky);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* INPUT */
+  .input-area{padding:14px 24px 18px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0}
+  .input-wrapper{display:flex;gap:10px;align-items:flex-end;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:11px 13px;transition:border-color 0.2s}
+  .input-wrapper:focus-within{border-color:rgba(0,194,255,0.3)}
+  #userInput{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:inherit;font-size:14px;resize:none;min-height:21px;max-height:110px;line-height:1.5}
+  #userInput::placeholder{color:var(--text-dim)}
+  .send-btn{width:32px;height:32px;border-radius:8px;background:var(--sky);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;color:#000;font-size:15px;font-weight:700}
+  .send-btn:hover:not(:disabled){background:#33ccff;transform:scale(1.05)}
+  .send-btn:disabled{background:var(--surface2);color:var(--text-dim);cursor:not-allowed;transform:none}
+  .hint-row{display:flex;gap:7px;margin-top:8px;flex-wrap:wrap}
+  .hint-chip{font-family:monospace;font-size:10px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);color:var(--text-dim);cursor:pointer;transition:all 0.15s}
+  .hint-chip:hover{border-color:var(--sky);color:var(--sky)}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-mark">Sky<span>scale</span></div>
+    <div class="logo-sub">Intelligence Surface v1.0</div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Commands</div>
+    <button class="cmd-btn" onclick="insertCmd('REPORT: ')"><span class="cmd-icon">REPORT</span> Intelligence Brief</button>
+    <button class="cmd-btn" onclick="insertCmd('DECK: ')"><span class="cmd-icon">DECK</span> Deck Brief</button>
+    <button class="cmd-btn" onclick="insertCmd('PLAN: ')"><span class="cmd-icon">PLAN</span> Media Plan</button>
+    <button class="cmd-btn" onclick="insertCmd('FIND: ')"><span class="cmd-icon">FIND</span> Search Drive</button>
+    <button class="cmd-btn" onclick="insertCmd('BRIEF ME: ')"><span class="cmd-icon">BRIEF</span> Client Status</button>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Active Clients</div>
+    <div class="client-chip" onclick="insertCmd('BRIEF ME: Qatar Airways')"><span class="client-dot dot-qa"></span>Qatar Airways</div>
+    <div class="client-chip" onclick="insertCmd('BRIEF ME: QR Cargo')"><span class="client-dot dot-qrc"></span>QR Cargo</div>
+    <div class="client-chip" onclick="insertCmd('BRIEF ME: Egypt Tourism Authority')"><span class="client-dot dot-eta"></span>Egypt Tourism Authority</div>
+    <div class="client-chip" onclick="insertCmd('BRIEF ME: Etihad')"><span class="client-dot dot-et"></span>Etihad</div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="mode-badge" id="modeBadge">READY</span>
+      <span class="topbar-title" id="topbarTitle">Skyscale Intelligence Surface</span>
+    </div>
+    <span style="font-family:monospace;font-size:10px;color:var(--text-dim)">sergio@skyscalemedia.com</span>
+  </div>
+
+  <div class="chat-area" id="chatArea">
+    <div class="welcome" id="welcomeScreen">
+      <div class="welcome-orb">✦</div>
+      <h2>Intelligence Surface</h2>
+      <p>A private AI operator for Skyscale Media. Drive-first. Client-scoped. Zero fabrication.</p>
+      <div class="quick-cmds">
+        <div class="quick-cmd" onclick="insertCmd('FIND: Egypt Tourism Authority FIFA 2026')">FIND: ETA FIFA</div>
+        <div class="quick-cmd" onclick="insertCmd('REPORT: Qatar Airways OOH Q3')">REPORT: QR OOH</div>
+        <div class="quick-cmd" onclick="insertCmd('DECK: QR Cargo Oil & Gas print proposal')">DECK: QR Cargo</div>
+        <div class="quick-cmd" onclick="insertCmd('PLAN: Egypt Tourism Authority, global markets, FIFA World Cup 2026')">PLAN: ETA FIFA</div>
+        <div class="quick-cmd" onclick="insertCmd('BRIEF ME: Qatar Airways')">BRIEF ME: QR</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <div class="input-wrapper">
+      <textarea id="userInput" placeholder="Type REPORT:, DECK:, PLAN:, FIND:, or BRIEF ME: …" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">↑</button>
+    </div>
+    <div class="hint-row">
+      <div class="hint-chip" onclick="insertCmd('REPORT: ')">REPORT</div>
+      <div class="hint-chip" onclick="insertCmd('DECK: ')">DECK</div>
+      <div class="hint-chip" onclick="insertCmd('PLAN: ')">PLAN</div>
+      <div class="hint-chip" onclick="insertCmd('FIND: ')">FIND</div>
+      <div class="hint-chip" onclick="insertCmd('BRIEF ME: ')">BRIEF ME</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SYSTEM = `You are the Skyscale Intelligence Surface — a private, expert AI assistant for Skyscale Media, a Dubai-based media agency. You operate exclusively on behalf of authorised Skyscale users.
+
+ACTIVE CLIENTS: Qatar Airways (OOH/brand), QR Cargo (print/Oil & Gas), Egypt Tourism Authority (OOH/FIFA 2026/15+ markets), Etihad (campaign support).
+
+OUTPUT MODES:
+REPORT → Executive Summary (BLUF) → Context & Objective → Key Findings (max 7) → Strategic Implications → Next Steps → Drive References
+DECK BRIEF → Title & Client → Objective & Audience → Reference Deck → Slide-by-Slide Plan → Data & Asset Requirements → Production Notes
+MEDIA PLAN → Campaign Overview → Target Markets (Tier 1/2/3) → Channel Table → Audience Strategy → KPIs → Exclusions → Drive References
+FIND → Drive search summary only — no output generated
+BRIEF ME → 1-page client status summary
+
+RULES: Drive-first (always note whether Drive files were referenced). Client firewall (never mix client data). No fabrication. Tone: direct, professional, zero filler.
+Use ━━━ dividers and numbered sections. Commands: REPORT:, DECK:, PLAN:, FIND:, BRIEF ME:`;
+
+let isThinking = false;
+
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function getTime(){ return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); }
+function scrollBottom(){ const a=document.getElementById('chatArea'); setTimeout(()=>a.scrollTop=a.scrollHeight,60); }
+function hideWelcome(){ const w=document.getElementById('welcomeScreen'); if(w)w.remove(); }
+function autoResize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,110)+'px'; }
+function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
+function insertCmd(cmd){ const el=document.getElementById('userInput'); el.value=cmd; el.focus(); autoResize(el); }
+
+function detectMode(text){
+  const t=text.toUpperCase();
+  if(t.startsWith('REPORT:')) return 'report';
+  if(t.startsWith('DECK:')) return 'deck';
+  if(t.startsWith('PLAN:')) return 'plan';
+  if(t.startsWith('FIND:')) return 'find';
+  if(t.startsWith('BRIEF ME:')) return 'brief';
+  return 'chat';
+}
+
+const MODE_META = {
+  report:{label:'REPORT',cls:'report',title:'Intelligence Brief'},
+  deck:{label:'DECK BRIEF',cls:'deck',title:'Deck Brief'},
+  plan:{label:'MEDIA PLAN',cls:'plan',title:'Media Plan'},
+  find:{label:'FIND',cls:'find',title:'Drive Search'},
+  brief:{label:'BRIEF ME',cls:'brief',title:'Client Status'},
+  chat:{label:'READY',cls:'',title:'Skyscale Intelligence Surface'},
+};
+
+function updateBadge(mode){
+  const m=MODE_META[mode]||MODE_META.chat;
+  const b=document.getElementById('modeBadge');
+  b.textContent=m.label; b.className='mode-badge '+m.cls;
+  document.getElementById('topbarTitle').textContent=m.title;
+}
+
+function appendUserMsg(text){
+  const chat=document.getElementById('chatArea');
+  const g=document.createElement('div'); g.className='msg-group';
+  g.innerHTML=`<div class="msg user"><div class="msg-avatar user">SG</div><div class="msg-bubble">${esc(text)}</div></div><div class="msg-time" style="text-align:right;padding-right:44px">${getTime()}</div>`;
+  chat.appendChild(g); scrollBottom();
+}
+
+function appendThinking(label){
+  const chat=document.getElementById('chatArea');
+  const el=document.createElement('div'); el.id='thinkingEl'; el.className='thinking';
+  el.innerHTML=`<div class="msg-avatar ai">SI</div><div class="thinking-step"><div class="spin"></div><span id="thinkLabel">${esc(label||'Working…')}</span></div>`;
+  chat.appendChild(el); scrollBottom();
+}
+function updateThinking(t){ const el=document.getElementById('thinkLabel'); if(el)el.textContent=t; }
+function removeThinking(){ const el=document.getElementById('thinkingEl'); if(el)el.remove(); }
+
+function appendOutputBlock(typeLabel,clientLabel,body){
+  const chat=document.getElementById('chatArea');
+  const id='ob_'+Date.now();
+  const g=document.createElement('div'); g.className='msg-group';
+  g.innerHTML=`<div class="msg ai" style="align-items:flex-start"><div class="msg-avatar ai" style="margin-top:2px">SI</div><div class="output-block"><div class="output-header"><span class="output-type">${esc(typeLabel)}</span><div class="output-meta-row"><span class="output-meta">${esc(clientLabel)} · ${getTime()}</span><button class="copy-btn" onclick="copyBlock('${id}')">COPY</button></div></div><div class="output-body" id="${id}">${esc(body)}</div></div></div>`;
+  chat.appendChild(g); scrollBottom();
+}
+
+function appendSimpleMsg(html){
+  const chat=document.getElementById('chatArea');
+  const g=document.createElement('div'); g.className='msg-group';
+  g.innerHTML=`<div class="msg ai"><div class="msg-avatar ai">SI</div><div class="msg-bubble">${html}</div></div><div class="msg-time" style="padding-left:42px">${getTime()}</div>`;
+  chat.appendChild(g); scrollBottom();
+}
+
+function appendConfirm(items,onOk,onNo){
+  const chat=document.getElementById('chatArea');
+  const g=document.createElement('div'); g.id='confirmBlock'; g.className='msg-group';
+  const itemsHtml=items.map(i=>`<div class="confirm-item">${esc(i)}</div>`).join('');
+  g.innerHTML=`<div class="msg ai" style="align-items:flex-start"><div class="msg-avatar ai" style="margin-top:2px">SI</div><div class="confirm-block"><div class="confirm-title">⚡ Confirm before generating</div>${itemsHtml}<div class="confirm-actions"><button class="btn-ok" id="btnOk">Confirm & Generate</button><button class="btn-no" id="btnNo">Cancel</button></div></div></div>`;
+  chat.appendChild(g);
+  document.getElementById('btnOk').onclick=()=>{g.remove();onOk();};
+  document.getElementById('btnNo').onclick=()=>{g.remove();onNo();};
+  scrollBottom();
+}
+
+function copyBlock(id){
+  const el=document.getElementById(id); if(!el)return;
+  navigator.clipboard.writeText(el.textContent).then(()=>{
+    const btn=el.closest('.output-block').querySelector('.copy-btn');
+    if(btn){btn.textContent='COPIED';setTimeout(()=>btn.textContent='COPY',2000);}
+  });
+}
+
+function extractClient(text){
+  const clients=['Qatar Airways','QR Cargo','Egypt Tourism Authority','Etihad'];
+  const u=text.toUpperCase();
+  for(const c of clients){ if(u.includes(c.toUpperCase()))return c; }
+  return '';
+}
+
+async function callAI(prompt){
+  const res=await fetch('/api/chat',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({prompt,system:SYSTEM})
+  });
+  if(!res.ok) throw new Error('API error '+res.status);
+  const data=await res.json();
+  return data.content||'';
+}
+
+function buildPrompt(mode,text,client){
+  const today=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
+  const driveNote='Note: No live Drive connection in standalone mode. Reference relevant Skyscale file types for this client where applicable.';
+  const modeMap={
+    report:`Generate a complete REPORT for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\n${driveNote}\nDATE: ${today}\nUse the full REPORT structure with ━━━ dividers.`,
+    deck:`Generate a complete DECK BRIEF for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\n${driveNote}\nDATE: ${today}\nUse the full DECK BRIEF structure with slide-by-slide plan.`,
+    plan:`Generate a complete MEDIA PLAN for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\n${driveNote}\nDATE: ${today}\nUse the full MEDIA PLAN structure including channel table.`,
+    find:`Summarise what Drive files would typically exist for this request, and what types of reference documents Skyscale would have:\nREQUEST: ${text}\nNote: No live Drive in standalone mode — describe expected file types.`,
+    brief:`Generate a 1-page CLIENT STATUS BRIEF for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\n${driveNote}\nDATE: ${today}`,
+    chat:text
+  };
+  return modeMap[mode]||text;
+}
+
+async function sendMessage(){
+  const input=document.getElementById('userInput');
+  const text=input.value.trim();
+  if(!text||isThinking)return;
+  hideWelcome(); isThinking=true;
+  const mode=detectMode(text);
+  updateBadge(mode);
+  input.value=''; autoResize(input);
+  document.getElementById('sendBtn').disabled=true;
+  appendUserMsg(text);
+  const client=extractClient(text);
+  const modeLabels={report:'REPORT',deck:'DECK BRIEF',plan:'MEDIA PLAN',find:'FIND',brief:'BRIEF ME',chat:''};
+
+  if(mode==='chat'||mode==='find'||mode==='brief'){
+    appendThinking(mode==='find'?'Searching Drive…':mode==='brief'?'Generating status brief…':'Thinking…');
+    try{
+      const reply=await callAI(buildPrompt(mode,text,client));
+      removeThinking();
+      mode==='chat'?appendSimpleMsg(esc(reply).replace(/\n/g,'<br>')):appendOutputBlock(modeLabels[mode],client||'Skyscale',reply);
+    }catch(e){removeThinking();appendSimpleMsg('⚠ Error: '+esc(e.message));}
+    isThinking=false;document.getElementById('sendBtn').disabled=false;input.focus();return;
+  }
+
+  // REPORT / DECK / PLAN — show confirm first
+  appendConfirm([
+    'Drive: Standalone mode — no live Drive connection',
+    `Output Mode: ${modeLabels[mode]}`,
+    `Client: ${client||'Not specified'}`,
+    `Request: ${text.substring(0,80)}${text.length>80?'…':''}`,
+  ],
+  async()=>{
+    isThinking=true;document.getElementById('sendBtn').disabled=true;
+    appendThinking('Generating '+modeLabels[mode]+'…');
+    try{
+      const reply=await callAI(buildPrompt(mode,text,client));
+      removeThinking();appendOutputBlock(modeLabels[mode],client||'Skyscale',reply);
+    }catch(e){removeThinking();appendSimpleMsg('⚠ Error: '+esc(e.message));}
+    isThinking=false;document.getElementById('sendBtn').disabled=false;input.focus();
+  },
+  ()=>{appendSimpleMsg('Cancelled.');isThinking=false;document.getElementById('sendBtn').disabled=false;updateBadge('chat');input.focus();}
+  );
+}
+</script>
+</body>
+</html>
