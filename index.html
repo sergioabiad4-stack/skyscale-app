@@ -6,50 +6,45 @@
 <title>Skyscale Intelligence Surface</title>
 <style>
   :root {
-    --bg: #080a0f; --surface: #0d1017; --surface2: #131820;
-    --border: rgba(255,255,255,0.06); --border-active: rgba(255,255,255,0.15);
-    --sky: #00c2ff; --sky-dim: rgba(0,194,255,0.12); --sky-glow: rgba(0,194,255,0.04);
-    --gold: #f0c060; --gold-dim: rgba(240,192,96,0.1);
-    --text: #e8eaf0; --text-muted: rgba(232,234,240,0.45); --text-dim: rgba(232,234,240,0.25);
-    --green: #00e5a0; --red: #ff4d6d; --radius: 12px;
+    --bg:#080a0f;--surface:#0d1017;--surface2:#131820;
+    --border:rgba(255,255,255,0.06);--border-active:rgba(255,255,255,0.15);
+    --sky:#00c2ff;--sky-dim:rgba(0,194,255,0.12);--sky-glow:rgba(0,194,255,0.04);
+    --gold:#f0c060;--text:#e8eaf0;--text-muted:rgba(232,234,240,0.45);--text-dim:rgba(232,234,240,0.25);
+    --green:#00e5a0;--red:#ff4d6d;--radius:12px;
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,'Segoe UI',sans-serif; font-size:14px; height:100vh; display:flex; overflow:hidden; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:14px;height:100vh;display:flex;overflow:hidden;}
 
-  /* SIDEBAR */
-  .sidebar { width:240px; min-width:240px; background:var(--surface); border-right:1px solid var(--border); display:flex; flex-direction:column; padding:20px 0; }
-  .logo { padding:0 18px 20px; border-bottom:1px solid var(--border); margin-bottom:18px; }
-  .logo-mark { font-weight:800; font-size:17px; letter-spacing:-0.02em; }
-  .logo-mark span { color:var(--sky); }
-  .logo-sub { font-family:monospace; font-size:9px; color:var(--text-dim); letter-spacing:0.12em; text-transform:uppercase; margin-top:3px; }
-  .sidebar-section { padding:0 10px; margin-bottom:22px; }
-  .sidebar-label { font-family:monospace; font-size:9px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); padding:0 8px; margin-bottom:6px; }
-  .cmd-btn { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; cursor:pointer; transition:all 0.15s; border:none; background:none; color:var(--text-muted); font-family:inherit; font-size:13px; width:100%; text-align:left; }
-  .cmd-btn:hover { background:var(--sky-glow); color:var(--text); }
-  .cmd-icon { font-family:monospace; font-size:9px; background:var(--surface2); padding:3px 6px; border-radius:4px; color:var(--sky); min-width:46px; text-align:center; letter-spacing:0.04em; flex-shrink:0; }
-  .client-chip { display:flex; align-items:center; gap:8px; padding:7px 10px; border-radius:8px; cursor:pointer; color:var(--text-muted); font-size:12.5px; transition:all 0.15s; }
-  .client-chip:hover { background:var(--sky-glow); color:var(--text); }
-  .client-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
-  .dot-qa{background:#00c2ff} .dot-eta{background:#f0c060} .dot-et{background:#a78bfa} .dot-qrc{background:#00e5a0}
+  .sidebar{width:240px;min-width:240px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:20px 0;}
+  .logo{padding:0 18px 20px;border-bottom:1px solid var(--border);margin-bottom:18px;}
+  .logo-mark{font-weight:800;font-size:17px;letter-spacing:-0.02em;}
+  .logo-mark span{color:var(--sky);}
+  .logo-sub{font-family:monospace;font-size:9px;color:var(--text-dim);letter-spacing:0.12em;text-transform:uppercase;margin-top:3px;}
+  .sidebar-section{padding:0 10px;margin-bottom:22px;}
+  .sidebar-label{font-family:monospace;font-size:9px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);padding:0 8px;margin-bottom:6px;}
+  .cmd-btn{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:all 0.15s;border:none;background:none;color:var(--text-muted);font-family:inherit;font-size:13px;width:100%;text-align:left;}
+  .cmd-btn:hover{background:var(--sky-glow);color:var(--text);}
+  .cmd-icon{font-family:monospace;font-size:9px;background:var(--surface2);padding:3px 6px;border-radius:4px;color:var(--sky);min-width:46px;text-align:center;letter-spacing:0.04em;flex-shrink:0;}
+  .client-chip{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;cursor:pointer;color:var(--text-muted);font-size:12.5px;transition:all 0.15s;}
+  .client-chip:hover{background:var(--sky-glow);color:var(--text);}
+  .client-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .dot-qa{background:#00c2ff}.dot-eta{background:#f0c060}.dot-et{background:#a78bfa}.dot-qrc{background:#00e5a0}
 
-  /* MAIN */
-  .main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
-  .topbar { display:flex; align-items:center; justify-content:space-between; padding:14px 24px; border-bottom:1px solid var(--border); background:var(--surface); flex-shrink:0; }
-  .topbar-left { display:flex; align-items:center; gap:11px; }
-  .mode-badge { font-family:monospace; font-size:10px; padding:4px 10px; border-radius:20px; background:var(--sky-dim); color:var(--sky); border:1px solid rgba(0,194,255,0.2); text-transform:uppercase; letter-spacing:0.08em; transition:all 0.3s; }
+  .main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;}
+  .topbar-left{display:flex;align-items:center;gap:11px;}
+  .mode-badge{font-family:monospace;font-size:10px;padding:4px 10px;border-radius:20px;background:var(--sky-dim);color:var(--sky);border:1px solid rgba(0,194,255,0.2);text-transform:uppercase;letter-spacing:0.08em;transition:all 0.3s;}
   .mode-badge.report{background:rgba(0,229,160,0.1);color:var(--green);border-color:rgba(0,229,160,0.2)}
   .mode-badge.deck{background:rgba(240,192,96,0.1);color:var(--gold);border-color:rgba(240,192,96,0.2)}
   .mode-badge.find{background:rgba(167,139,250,0.1);color:#a78bfa;border-color:rgba(167,139,250,0.2)}
   .mode-badge.brief{background:rgba(255,77,109,0.1);color:#ff8fab;border-color:rgba(255,77,109,0.2)}
-  .topbar-title { font-weight:600; font-size:14px; }
+  .topbar-title{font-weight:600;font-size:14px;}
 
-  /* CHAT */
-  .chat-area { flex:1; overflow-y:auto; padding:24px; display:flex; flex-direction:column; gap:18px; scroll-behavior:smooth; }
-  .chat-area::-webkit-scrollbar{width:4px} .chat-area::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
+  .chat-area{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:18px;scroll-behavior:smooth;}
+  .chat-area::-webkit-scrollbar{width:4px}.chat-area::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
 
-  /* WELCOME */
-  .welcome { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:50px 40px; gap:18px; flex:1; min-height:400px; }
-  .welcome-orb { width:76px; height:76px; border-radius:50%; background:radial-gradient(circle at 35% 35%,rgba(0,194,255,0.4),rgba(0,194,255,0.05) 60%,transparent); border:1px solid rgba(0,194,255,0.2); display:flex; align-items:center; justify-content:center; font-size:26px; box-shadow:0 0 60px rgba(0,194,255,0.1); animation:float 4s ease-in-out infinite; }
+  .welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:50px 40px;gap:18px;flex:1;min-height:400px;}
+  .welcome-orb{width:76px;height:76px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(0,194,255,0.4),rgba(0,194,255,0.05) 60%,transparent);border:1px solid rgba(0,194,255,0.2);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 0 60px rgba(0,194,255,0.1);animation:float 4s ease-in-out infinite;}
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
   .welcome h2{font-weight:700;font-size:24px;letter-spacing:-0.02em}
   .welcome p{color:var(--text-muted);font-size:13.5px;max-width:400px;line-height:1.7}
@@ -57,7 +52,6 @@
   .quick-cmd{font-family:monospace;font-size:10px;padding:6px 13px;border-radius:8px;border:1px solid var(--border-active);background:var(--surface2);color:var(--text-muted);cursor:pointer;transition:all 0.15s;letter-spacing:0.03em}
   .quick-cmd:hover{border-color:var(--sky);color:var(--sky);background:var(--sky-dim)}
 
-  /* MESSAGES */
   .msg-group{display:flex;flex-direction:column;gap:4px}
   .msg{display:flex;gap:12px;max-width:820px}
   .msg.user{flex-direction:row-reverse;align-self:flex-end}
@@ -68,9 +62,7 @@
   .msg.ai .msg-bubble{background:var(--surface2);border:1px solid var(--border);border-top-left-radius:4px}
   .msg.user .msg-bubble{background:var(--sky-dim);border:1px solid rgba(0,194,255,0.15);border-top-right-radius:4px}
   .msg-time{font-family:monospace;font-size:9px;color:var(--text-dim);padding:0 42px;letter-spacing:0.04em}
-  .msg.user+.msg-time{text-align:right}
 
-  /* OUTPUT BLOCK */
   .output-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;max-width:720px}
   .output-header{display:flex;align-items:center;justify-content:space-between;padding:11px 15px;border-bottom:1px solid var(--border);background:var(--surface2)}
   .output-type{font-family:monospace;font-size:9px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--sky)}
@@ -79,9 +71,23 @@
   .copy-btn{font-family:monospace;font-size:9px;padding:3px 9px;border:1px solid var(--border-active);border-radius:4px;background:none;color:var(--text-dim);cursor:pointer;transition:all 0.15s}
   .copy-btn:hover{color:var(--sky);border-color:var(--sky)}
   .output-body{padding:16px 18px;font-size:13px;line-height:1.75;color:var(--text);white-space:pre-wrap;max-height:480px;overflow-y:auto}
-  .output-body::-webkit-scrollbar{width:4px} .output-body::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
+  .output-body::-webkit-scrollbar{width:4px}.output-body::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
 
-  /* CONFIRM */
+  /* DRIVE FILE RESULTS */
+  .drive-results{background:var(--surface);border:1px solid rgba(167,139,250,0.2);border-radius:var(--radius);overflow:hidden;max-width:680px}
+  .drive-results-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface2)}
+  .drive-results-title{font-family:monospace;font-size:9px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#a78bfa}
+  .drive-count{font-family:monospace;font-size:9px;color:var(--text-dim)}
+  .drive-file{display:flex;align-items:center;gap:11px;padding:10px 14px;border-bottom:1px solid var(--border);text-decoration:none;transition:background 0.12s}
+  .drive-file:last-child{border-bottom:none}
+  .drive-file:hover{background:rgba(167,139,250,0.05)}
+  .drive-file-icon{font-size:16px;flex-shrink:0;width:22px;text-align:center}
+  .drive-file-info{flex:1;min-width:0}
+  .drive-file-name{font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .drive-file-meta{font-family:monospace;font-size:9px;color:var(--text-dim);margin-top:2px}
+  .drive-file-arrow{color:var(--text-dim);font-size:12px;flex-shrink:0}
+  .drive-no-results{padding:16px;font-size:13px;color:var(--text-muted);font-style:italic}
+
   .confirm-block{background:var(--surface);border:1px solid rgba(0,194,255,0.2);border-radius:var(--radius);padding:14px 16px;max-width:680px}
   .confirm-title{font-family:monospace;font-size:10px;font-weight:500;color:var(--sky);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px}
   .confirm-item{font-size:12.5px;color:var(--text-muted);padding:2px 0}
@@ -92,13 +98,11 @@
   .btn-no{font-family:monospace;font-size:10px;padding:7px 14px;border-radius:7px;border:1px solid var(--border);background:none;color:var(--text-muted);cursor:pointer;transition:all 0.15s}
   .btn-no:hover{border-color:var(--border-active);color:var(--text)}
 
-  /* THINKING */
   .thinking{display:flex;gap:12px;align-items:flex-start}
   .thinking-step{font-family:monospace;font-size:11px;color:var(--text-dim);padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;gap:8px;letter-spacing:0.04em}
   .spin{width:12px;height:12px;border:1.5px solid var(--border-active);border-top-color:var(--sky);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* INPUT */
   .input-area{padding:14px 24px 18px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0}
   .input-wrapper{display:flex;gap:10px;align-items:flex-end;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:11px 13px;transition:border-color 0.2s}
   .input-wrapper:focus-within{border-color:rgba(0,194,255,0.3)}
@@ -149,7 +153,7 @@
     <div class="welcome" id="welcomeScreen">
       <div class="welcome-orb">✦</div>
       <h2>Intelligence Surface</h2>
-      <p>A private AI operator for Skyscale Media. Drive-first. Client-scoped. Zero fabrication.</p>
+      <p>Drive-connected. Client-scoped. Zero fabrication.</p>
       <div class="quick-cmds">
         <div class="quick-cmd" onclick="insertCmd('FIND: Egypt Tourism Authority FIFA 2026')">FIND: ETA FIFA</div>
         <div class="quick-cmd" onclick="insertCmd('REPORT: Qatar Airways OOH Q3')">REPORT: QR OOH</div>
@@ -176,7 +180,7 @@
 </div>
 
 <script>
-const SYSTEM = `You are the Skyscale Intelligence Surface — a private, expert AI assistant for Skyscale Media, a Dubai-based media agency. You operate exclusively on behalf of authorised Skyscale users.
+const SYSTEM = `You are the Skyscale Intelligence Surface — a private, expert AI assistant for Skyscale Media, a Dubai-based media agency.
 
 ACTIVE CLIENTS: Qatar Airways (OOH/brand), QR Cargo (print/Oil & Gas), Egypt Tourism Authority (OOH/FIFA 2026/15+ markets), Etihad (campaign support).
 
@@ -184,83 +188,110 @@ OUTPUT MODES:
 REPORT → Executive Summary (BLUF) → Context & Objective → Key Findings (max 7) → Strategic Implications → Next Steps → Drive References
 DECK BRIEF → Title & Client → Objective & Audience → Reference Deck → Slide-by-Slide Plan → Data & Asset Requirements → Production Notes
 MEDIA PLAN → Campaign Overview → Target Markets (Tier 1/2/3) → Channel Table → Audience Strategy → KPIs → Exclusions → Drive References
-FIND → Drive search summary only — no output generated
+FIND → Drive search results provided separately
 BRIEF ME → 1-page client status summary
 
-RULES: Drive-first (always note whether Drive files were referenced). Client firewall (never mix client data). No fabrication. Tone: direct, professional, zero filler.
-Use ━━━ dividers and numbered sections. Commands: REPORT:, DECK:, PLAN:, FIND:, BRIEF ME:`;
+RULES: Drive-first. Client firewall (never mix client data). No fabrication. Tone: direct, professional, zero filler. Use ━━━ dividers and numbered sections.`;
 
 let isThinking = false;
 
-function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
-function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function getTime(){ return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); }
-function scrollBottom(){ const a=document.getElementById('chatArea'); setTimeout(()=>a.scrollTop=a.scrollHeight,60); }
-function hideWelcome(){ const w=document.getElementById('welcomeScreen'); if(w)w.remove(); }
-function autoResize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,110)+'px'; }
-function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
-function insertCmd(cmd){ const el=document.getElementById('userInput'); el.value=cmd; el.focus(); autoResize(el); }
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function getTime(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
+function scrollBottom(){const a=document.getElementById('chatArea');setTimeout(()=>a.scrollTop=a.scrollHeight,60);}
+function hideWelcome(){const w=document.getElementById('welcomeScreen');if(w)w.remove();}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px';}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
+function insertCmd(cmd){const el=document.getElementById('userInput');el.value=cmd;el.focus();autoResize(el);}
 
 function detectMode(text){
   const t=text.toUpperCase();
-  if(t.startsWith('REPORT:')) return 'report';
-  if(t.startsWith('DECK:')) return 'deck';
-  if(t.startsWith('PLAN:')) return 'plan';
-  if(t.startsWith('FIND:')) return 'find';
-  if(t.startsWith('BRIEF ME:')) return 'brief';
+  if(t.startsWith('REPORT:'))return 'report';
+  if(t.startsWith('DECK:'))return 'deck';
+  if(t.startsWith('PLAN:'))return 'plan';
+  if(t.startsWith('FIND:'))return 'find';
+  if(t.startsWith('BRIEF ME:'))return 'brief';
   return 'chat';
 }
 
-const MODE_META = {
-  report:{label:'REPORT',cls:'report',title:'Intelligence Brief'},
-  deck:{label:'DECK BRIEF',cls:'deck',title:'Deck Brief'},
-  plan:{label:'MEDIA PLAN',cls:'plan',title:'Media Plan'},
-  find:{label:'FIND',cls:'find',title:'Drive Search'},
-  brief:{label:'BRIEF ME',cls:'brief',title:'Client Status'},
-  chat:{label:'READY',cls:'',title:'Skyscale Intelligence Surface'},
-};
-
 function updateBadge(mode){
-  const m=MODE_META[mode]||MODE_META.chat;
+  const map={report:{l:'REPORT',c:'report',t:'Intelligence Brief'},deck:{l:'DECK BRIEF',c:'deck',t:'Deck Brief'},plan:{l:'MEDIA PLAN',c:'plan',t:'Media Plan'},find:{l:'FIND',c:'find',t:'Drive Search'},brief:{l:'BRIEF ME',c:'brief',t:'Client Status'},chat:{l:'READY',c:'',t:'Skyscale Intelligence Surface'}};
+  const m=map[mode]||map.chat;
   const b=document.getElementById('modeBadge');
-  b.textContent=m.label; b.className='mode-badge '+m.cls;
-  document.getElementById('topbarTitle').textContent=m.title;
+  b.textContent=m.l;b.className='mode-badge '+m.c;
+  document.getElementById('topbarTitle').textContent=m.t;
+}
+
+function extractClient(text){
+  const clients=['Qatar Airways','QR Cargo','Egypt Tourism Authority','Etihad','Riyadh Air','Aldar','Mastercard','Emirates'];
+  const u=text.toUpperCase();
+  for(const c of clients){if(u.includes(c.toUpperCase()))return c;}
+  return '';
+}
+
+function driveIcon(type){
+  if(type.includes('spreadsheet'))return '📊';
+  if(type.includes('presentation'))return '📑';
+  if(type.includes('document'))return '📄';
+  if(type.includes('pdf'))return '📕';
+  if(type.includes('folder'))return '📁';
+  if(type.includes('image')||type.includes('photo'))return '🖼️';
+  return '📎';
 }
 
 function appendUserMsg(text){
   const chat=document.getElementById('chatArea');
-  const g=document.createElement('div'); g.className='msg-group';
+  const g=document.createElement('div');g.className='msg-group';
   g.innerHTML=`<div class="msg user"><div class="msg-avatar user">SG</div><div class="msg-bubble">${esc(text)}</div></div><div class="msg-time" style="text-align:right;padding-right:44px">${getTime()}</div>`;
-  chat.appendChild(g); scrollBottom();
+  chat.appendChild(g);scrollBottom();
 }
 
 function appendThinking(label){
   const chat=document.getElementById('chatArea');
-  const el=document.createElement('div'); el.id='thinkingEl'; el.className='thinking';
+  const el=document.createElement('div');el.id='thinkingEl';el.className='thinking';
   el.innerHTML=`<div class="msg-avatar ai">SI</div><div class="thinking-step"><div class="spin"></div><span id="thinkLabel">${esc(label||'Working…')}</span></div>`;
-  chat.appendChild(el); scrollBottom();
+  chat.appendChild(el);scrollBottom();
 }
-function updateThinking(t){ const el=document.getElementById('thinkLabel'); if(el)el.textContent=t; }
-function removeThinking(){ const el=document.getElementById('thinkingEl'); if(el)el.remove(); }
+function updateThinking(t){const el=document.getElementById('thinkLabel');if(el)el.textContent=t;}
+function removeThinking(){const el=document.getElementById('thinkingEl');if(el)el.remove();}
 
 function appendOutputBlock(typeLabel,clientLabel,body){
   const chat=document.getElementById('chatArea');
   const id='ob_'+Date.now();
-  const g=document.createElement('div'); g.className='msg-group';
+  const g=document.createElement('div');g.className='msg-group';
   g.innerHTML=`<div class="msg ai" style="align-items:flex-start"><div class="msg-avatar ai" style="margin-top:2px">SI</div><div class="output-block"><div class="output-header"><span class="output-type">${esc(typeLabel)}</span><div class="output-meta-row"><span class="output-meta">${esc(clientLabel)} · ${getTime()}</span><button class="copy-btn" onclick="copyBlock('${id}')">COPY</button></div></div><div class="output-body" id="${id}">${esc(body)}</div></div></div>`;
-  chat.appendChild(g); scrollBottom();
+  chat.appendChild(g);scrollBottom();
+}
+
+function appendDriveResults(files,query){
+  const chat=document.getElementById('chatArea');
+  const g=document.createElement('div');g.className='msg-group';
+  let inner='';
+  if(!files||files.length===0){
+    inner=`<div class="drive-no-results">No files found for "${esc(query)}" in Drive. Check the folder is shared with the service account.</div>`;
+  }else{
+    inner=files.map(f=>`<a class="drive-file" href="${esc(f.url||'#')}" target="_blank" rel="noopener">
+      <span class="drive-file-icon">${driveIcon(f.type)}</span>
+      <div class="drive-file-info">
+        <div class="drive-file-name">${esc(f.name)}</div>
+        <div class="drive-file-meta">${esc(f.type)} · ${esc(f.modified)}</div>
+      </div>
+      <span class="drive-file-arrow">↗</span>
+    </a>`).join('');
+  }
+  g.innerHTML=`<div class="msg ai" style="align-items:flex-start"><div class="msg-avatar ai" style="margin-top:2px">SI</div><div class="drive-results"><div class="drive-results-header"><span class="drive-results-title">⬡ Drive Results</span><span class="drive-count">${files?files.length:0} files · ${getTime()}</span></div>${inner}</div></div>`;
+  chat.appendChild(g);scrollBottom();
 }
 
 function appendSimpleMsg(html){
   const chat=document.getElementById('chatArea');
-  const g=document.createElement('div'); g.className='msg-group';
+  const g=document.createElement('div');g.className='msg-group';
   g.innerHTML=`<div class="msg ai"><div class="msg-avatar ai">SI</div><div class="msg-bubble">${html}</div></div><div class="msg-time" style="padding-left:42px">${getTime()}</div>`;
-  chat.appendChild(g); scrollBottom();
+  chat.appendChild(g);scrollBottom();
 }
 
-function appendConfirm(items,onOk,onNo){
+function appendConfirm(items,driveFiles,onOk,onNo){
   const chat=document.getElementById('chatArea');
-  const g=document.createElement('div'); g.id='confirmBlock'; g.className='msg-group';
+  const g=document.createElement('div');g.id='confirmBlock';g.className='msg-group';
   const itemsHtml=items.map(i=>`<div class="confirm-item">${esc(i)}</div>`).join('');
   g.innerHTML=`<div class="msg ai" style="align-items:flex-start"><div class="msg-avatar ai" style="margin-top:2px">SI</div><div class="confirm-block"><div class="confirm-title">⚡ Confirm before generating</div>${itemsHtml}<div class="confirm-actions"><button class="btn-ok" id="btnOk">Confirm & Generate</button><button class="btn-no" id="btnNo">Cancel</button></div></div></div>`;
   chat.appendChild(g);
@@ -270,77 +301,70 @@ function appendConfirm(items,onOk,onNo){
 }
 
 function copyBlock(id){
-  const el=document.getElementById(id); if(!el)return;
+  const el=document.getElementById(id);if(!el)return;
   navigator.clipboard.writeText(el.textContent).then(()=>{
     const btn=el.closest('.output-block').querySelector('.copy-btn');
     if(btn){btn.textContent='COPIED';setTimeout(()=>btn.textContent='COPY',2000);}
   });
 }
 
-function extractClient(text){
-  const clients=['Qatar Airways','QR Cargo','Egypt Tourism Authority','Etihad'];
-  const u=text.toUpperCase();
-  for(const c of clients){ if(u.includes(c.toUpperCase()))return c; }
-  return '';
+async function callDrive(query){
+  try{
+    const res=await fetch('/api/drive',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query})});
+    if(!res.ok)return[];
+    const data=await res.json();
+    return data.files||[];
+  }catch(e){return[];}
 }
 
-async function callAI(prompt){
-  const res=await fetch('/api/chat',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({prompt,system:SYSTEM})
-  });
-  if(!res.ok) throw new Error('API error '+res.status);
+async function callAI(prompt,driveContext){
+  let fullPrompt=prompt;
+  if(driveContext&&driveContext.length>0){
+    const fileList=driveContext.map(f=>`- ${f.name} (${f.type}, modified ${f.modified})`).join('\n');
+    fullPrompt=`${prompt}\n\nDRIVE FILES FOUND:\n${fileList}\n\nReference these files in your output where relevant.`;
+  }
+  const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:fullPrompt,system:SYSTEM})});
+  if(!res.ok)throw new Error('API error '+res.status);
   const data=await res.json();
   return data.content||'';
 }
 
-async function downloadFile(endpoint, payload, label){
-  const res=await fetch(endpoint,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(payload)
-  });
-  if(!res.ok){const e=await res.json().catch(()=>({error:'Server error'}));throw new Error(e.error||'Server error');}
-  const blob=await res.blob();
-  const disposition=res.headers.get('Content-Disposition')||'';
-  const match=disposition.match(/filename="([^"]+)"/);
-  const filename=match?match[1]:label;
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download=filename; a.click();
-  setTimeout(()=>URL.revokeObjectURL(url),5000);
-  return filename;
-}
-
 function buildPrompt(mode,text,client){
   const today=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
-  const driveNote='Note: No live Drive connection in standalone mode. Reference relevant Skyscale file types for this client where applicable.';
-  const modeMap={
-    report:`Generate a complete REPORT for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\n${driveNote}\nDATE: ${today}\nUse the full REPORT structure with ━━━ dividers.`,
-    deck:`Generate a complete DECK BRIEF for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\n${driveNote}\nDATE: ${today}\nUse the full DECK BRIEF structure with slide-by-slide plan.`,
-    plan:`Generate a complete MEDIA PLAN for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\n${driveNote}\nDATE: ${today}\nUse the full MEDIA PLAN structure including channel table.`,
-    find:`Summarise what Drive files would typically exist for this request, and what types of reference documents Skyscale would have:\nREQUEST: ${text}\nNote: No live Drive in standalone mode — describe expected file types.`,
-    brief:`Generate a 1-page CLIENT STATUS BRIEF for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\n${driveNote}\nDATE: ${today}`,
+  const map={
+    report:`Generate a complete REPORT for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\nDATE: ${today}\nUse the full REPORT structure with ━━━ dividers.`,
+    deck:`Generate a complete DECK BRIEF for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\nDATE: ${today}\nUse the full DECK BRIEF structure with slide-by-slide plan.`,
+    plan:`Generate a complete MEDIA PLAN for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\nDATE: ${today}\nUse the full MEDIA PLAN structure including channel table.`,
+    brief:`Generate a 1-page CLIENT STATUS BRIEF for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\nDATE: ${today}`,
     chat:text
   };
-  return modeMap[mode]||text;
+  return map[mode]||text;
 }
 
 async function sendMessage(){
   const input=document.getElementById('userInput');
   const text=input.value.trim();
   if(!text||isThinking)return;
-  hideWelcome(); isThinking=true;
+  hideWelcome();isThinking=true;
   const mode=detectMode(text);
   updateBadge(mode);
-  input.value=''; autoResize(input);
+  input.value='';autoResize(input);
   document.getElementById('sendBtn').disabled=true;
   appendUserMsg(text);
   const client=extractClient(text);
   const modeLabels={report:'REPORT',deck:'DECK BRIEF',plan:'MEDIA PLAN',find:'FIND',brief:'BRIEF ME',chat:''};
+  const searchTerm=text.replace(/^(REPORT:|DECK:|PLAN:|FIND:|BRIEF ME:)\s*/i,'').trim();
 
-  if(mode==='chat'||mode==='find'||mode==='brief'){
-    appendThinking(mode==='find'?'Searching Drive…':mode==='brief'?'Generating status brief…':'Thinking…');
+  if(mode==='find'){
+    appendThinking('Searching Drive…');
+    const files=await callDrive(searchTerm);
+    removeThinking();
+    appendDriveResults(files,searchTerm);
+    isThinking=false;document.getElementById('sendBtn').disabled=false;input.focus();return;
+  }
+
+  if(mode==='chat'||mode==='brief'){
+    appendThinking(mode==='brief'?'Generating status brief…':'Thinking…');
     try{
       const reply=await callAI(buildPrompt(mode,text,client));
       removeThinking();
@@ -349,36 +373,27 @@ async function sendMessage(){
     isThinking=false;document.getElementById('sendBtn').disabled=false;input.focus();return;
   }
 
-  // REPORT / DECK / PLAN — show confirm first
+  // REPORT / DECK / PLAN — search Drive first, then confirm
+  appendThinking('Searching Drive…');
+  const driveFiles=await callDrive(searchTerm);
+  removeThinking();
+
+  // Show drive results alongside confirm
+  if(driveFiles.length>0) appendDriveResults(driveFiles,searchTerm);
+
   appendConfirm([
-    'Drive: Standalone mode — no live Drive connection',
+    `Drive: ${driveFiles.length} file${driveFiles.length!==1?'s':''} found`,
     `Output Mode: ${modeLabels[mode]}`,
     `Client: ${client||'Not specified'}`,
     `Request: ${text.substring(0,80)}${text.length>80?'…':''}`,
-  ],
+  ],driveFiles,
   async()=>{
     isThinking=true;document.getElementById('sendBtn').disabled=true;
-    if(mode==='deck'){
-      appendThinking('Building PowerPoint deck…');
-      try{
-        const filename=await downloadFile('/api/deck',{prompt:text,client},`${client||'Skyscale'}_Deck.pptx`);
-        removeThinking();
-        appendSimpleMsg(`✅ Deck ready — <strong>${esc(filename)}</strong> downloaded to your device.`);
-      }catch(e){removeThinking();appendSimpleMsg('⚠ Error: '+esc(e.message));}
-    } else if(mode==='plan'){
-      appendThinking('Building Excel media plan…');
-      try{
-        const filename=await downloadFile('/api/plan',{prompt:text,client},`${client||'Skyscale'}_MediaPlan.xlsx`);
-        removeThinking();
-        appendSimpleMsg(`✅ Media plan ready — <strong>${esc(filename)}</strong> downloaded to your device.`);
-      }catch(e){removeThinking();appendSimpleMsg('⚠ Error: '+esc(e.message));}
-    } else {
-      appendThinking('Generating '+modeLabels[mode]+'…');
-      try{
-        const reply=await callAI(buildPrompt(mode,text,client));
-        removeThinking();appendOutputBlock(modeLabels[mode],client||'Skyscale',reply);
-      }catch(e){removeThinking();appendSimpleMsg('⚠ Error: '+esc(e.message));}
-    }
+    appendThinking('Generating '+modeLabels[mode]+'…');
+    try{
+      const reply=await callAI(buildPrompt(mode,text,client),driveFiles);
+      removeThinking();appendOutputBlock(modeLabels[mode],client||'Skyscale',reply);
+    }catch(e){removeThinking();appendSimpleMsg('⚠ Error: '+esc(e.message));}
     isThinking=false;document.getElementById('sendBtn').disabled=false;input.focus();
   },
   ()=>{appendSimpleMsg('Cancelled.');isThinking=false;document.getElementById('sendBtn').disabled=false;updateBadge('chat');input.focus();}
