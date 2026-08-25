@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     const safeQuery = query.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 
     const response = await drive.files.list({
-      q: `fullText contains '${safeQuery}' and trashed = false`,
+            q: `(name contains '${safeQuery}' or fullText contains '${safeQuery}') and trashed = false`,
       fields: 'files(id, name, mimeType, webViewLink, modifiedTime)',
       pageSize: 15,
       orderBy: 'modifiedTime desc',
