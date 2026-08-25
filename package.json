@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "express": "^4.19.0",
-    "googleapis": "^140.0.0"
+    "googleapis": "^140.0.0",
+        "pptxgenjs": "^3.12.0"
   }
 }
