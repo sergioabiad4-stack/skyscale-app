@@ -91,7 +91,7 @@
   .confirm-block{background:var(--surface);border:1px solid rgba(0,194,255,0.2);border-radius:var(--radius);padding:14px 16px;max-width:680px}
   .confirm-title{font-family:monospace;font-size:10px;font-weight:500;color:var(--sky);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px}
   .confirm-item{font-size:12.5px;color:var(--text-muted);padding:2px 0}
-  .confirm-item::before{content:"→ ";color:var(--sky);opacity:0.6}
+  .confirm-item::before{content:"â ";color:var(--sky);opacity:0.6}
   .confirm-actions{display:flex;gap:8px;margin-top:12px}
   .btn-ok{font-family:monospace;font-size:10px;padding:7px 16px;border-radius:7px;border:1px solid var(--sky);background:var(--sky-dim);color:var(--sky);cursor:pointer;transition:all 0.15s}
   .btn-ok:hover{background:rgba(0,194,255,0.25)}
@@ -151,7 +151,7 @@
 
   <div class="chat-area" id="chatArea">
     <div class="welcome" id="welcomeScreen">
-      <div class="welcome-orb">✦</div>
+      <div class="welcome-orb">â¦</div>
       <h2>Intelligence Surface</h2>
       <p>Drive-connected. Client-scoped. Zero fabrication.</p>
       <div class="quick-cmds">
@@ -166,8 +166,8 @@
 
   <div class="input-area">
     <div class="input-wrapper">
-      <textarea id="userInput" placeholder="Type REPORT:, DECK:, PLAN:, FIND:, or BRIEF ME: …" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-      <button class="send-btn" id="sendBtn" onclick="sendMessage()">↑</button>
+      <textarea id="userInput" placeholder="Type REPORT:, DECK:, PLAN:, FIND:, or BRIEF ME: â¦" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">â</button>
     </div>
     <div class="hint-row">
       <div class="hint-chip" onclick="insertCmd('REPORT: ')">REPORT</div>
@@ -180,18 +180,18 @@
 </div>
 
 <script>
-const SYSTEM = `You are the Skyscale Intelligence Surface — a private, expert AI assistant for Skyscale Media, a Dubai-based media agency.
+const SYSTEM = `You are the Skyscale Intelligence Surface â a private, expert AI assistant for Skyscale Media, a Dubai-based media agency.
 
 ACTIVE CLIENTS: Qatar Airways (OOH/brand), QR Cargo (print/Oil & Gas), Egypt Tourism Authority (OOH/FIFA 2026/15+ markets), Etihad (campaign support).
 
 OUTPUT MODES:
-REPORT → Executive Summary (BLUF) → Context & Objective → Key Findings (max 7) → Strategic Implications → Next Steps → Drive References
-DECK BRIEF → Title & Client → Objective & Audience → Reference Deck → Slide-by-Slide Plan → Data & Asset Requirements → Production Notes
-MEDIA PLAN → Campaign Overview → Target Markets (Tier 1/2/3) → Channel Table → Audience Strategy → KPIs → Exclusions → Drive References
-FIND → Drive search results provided separately
-BRIEF ME → 1-page client status summary
+REPORT â Executive Summary (BLUF) â Context & Objective â Key Findings (max 7) â Strategic Implications â Next Steps â Drive References
+DECK BRIEF â Title & Client â Objective & Audience â Reference Deck â Slide-by-Slide Plan â Data & Asset Requirements â Production Notes
+MEDIA PLAN â Campaign Overview â Target Markets (Tier 1/2/3) â Channel Table â Audience Strategy â KPIs â Exclusions â Drive References
+FIND â Drive search results provided separately
+BRIEF ME â 1-page client status summary
 
-RULES: Drive-first. Client firewall (never mix client data). No fabrication. Tone: direct, professional, zero filler. Use ━━━ dividers and numbered sections.`;
+RULES: Drive-first. Client firewall (never mix client data). No fabrication. Tone: direct, professional, zero filler. Use âââ dividers and numbered sections.`;
 
 let isThinking = false;
 
@@ -229,13 +229,13 @@ function extractClient(text){
 }
 
 function driveIcon(type){
-  if(type.includes('spreadsheet'))return '📊';
-  if(type.includes('presentation'))return '📑';
-  if(type.includes('document'))return '📄';
-  if(type.includes('pdf'))return '📕';
-  if(type.includes('folder'))return '📁';
-  if(type.includes('image')||type.includes('photo'))return '🖼️';
-  return '📎';
+  if(type.includes('spreadsheet'))return 'ð';
+  if(type.includes('presentation'))return 'ð';
+  if(type.includes('document'))return 'ð';
+  if(type.includes('pdf'))return 'ð';
+  if(type.includes('folder'))return 'ð';
+  if(type.includes('image')||type.includes('photo'))return 'ð¼ï¸';
+  return 'ð';
 }
 
 function appendUserMsg(text){
@@ -248,7 +248,7 @@ function appendUserMsg(text){
 function appendThinking(label){
   const chat=document.getElementById('chatArea');
   const el=document.createElement('div');el.id='thinkingEl';el.className='thinking';
-  el.innerHTML=`<div class="msg-avatar ai">SI</div><div class="thinking-step"><div class="spin"></div><span id="thinkLabel">${esc(label||'Working…')}</span></div>`;
+  el.innerHTML<`<div class="msg-avatar ai">SI</div><div class="thinking-step"><div class="spin"></div><span id="thinkLabel">${esc(label||'Workingâ¦')}</span></div>`;
   chat.appendChild(el);scrollBottom();
 }
 function updateThinking(t){const el=document.getElementById('thinkLabel');if(el)el.textContent=t;}
@@ -258,7 +258,7 @@ function appendOutputBlock(typeLabel,clientLabel,body){
   const chat=document.getElementById('chatArea');
   const id='ob_'+Date.now();
   const g=document.createElement('div');g.className='msg-group';
-  g.innerHTML=`<div class="msg ai" style="align-items:flex-start"><div class="msg-avatar ai" style="margin-top:2px">SI</div><div class="output-block"><div class="output-header"><span class="output-type">${esc(typeLabel)}</span><div class="output-meta-row"><span class="output-meta">${esc(clientLabel)} · ${getTime()}</span><button class="copy-btn" onclick="copyBlock('${id}')">COPY</button></div></div><div class="output-body" id="${id}">${esc(body)}</div></div></div>`;
+  g.innerHTML<`<div class="msg ai" style="align-items:flex-start"><div class="msg-avatar ai" style="margin-top:2px">SI</div><div class="output-block"><div class="output-header"><span class="output-type">${esc(typeLabel)}</span><div class="output-meta-row"><span class="output-meta">${esc(clientLabel)} Â· ${getTime()}</span><button class="copy-btn" onclick="copyBlock('${id}')">COPY</button></div></div><div class="output-body" id="${id}">${esc(body)}</div></div></div>`;
   chat.appendChild(g);scrollBottom();
 }
 
@@ -273,12 +273,12 @@ function appendDriveResults(files,query){
       <span class="drive-file-icon">${driveIcon(f.type)}</span>
       <div class="drive-file-info">
         <div class="drive-file-name">${esc(f.name)}</div>
-        <div class="drive-file-meta">${esc(f.type)} · ${esc(f.modified)}</div>
+        <div class="drive-file-meta">${esc(f.type)} Â· ${esc(f.modified)}</div>
       </div>
-      <span class="drive-file-arrow">↗</span>
+      <span class="drive-file-arrow">â</span>
     </a>`).join('');
   }
-  g.innerHTML=`<div class="msg ai" style="align-items:flex-start"><div class="msg-avatar ai" style="margin-top:2px">SI</div><div class="drive-results"><div class="drive-results-header"><span class="drive-results-title">⬡ Drive Results</span><span class="drive-count">${files?files.length:0} files · ${getTime()}</span></div>${inner}</div></div>`;
+  g.innerHTML<`<div class="msg ai" style="align-items:flex-start"><div class="msg-avatar ai" style="margin-top:2px">SI</div><div class="drive-results"><div class="drive-results-header"><span class="drive-results-title">â¬¡ Drive Results</span><span class="drive-count">${files?files.length:0} files Â· ${getTime()}</span></div>${inner}</div></div>`;
   chat.appendChild(g);scrollBottom();
 }
 
@@ -293,7 +293,7 @@ function appendConfirm(items,driveFiles,onOk,onNo){
   const chat=document.getElementById('chatArea');
   const g=document.createElement('div');g.id='confirmBlock';g.className='msg-group';
   const itemsHtml=items.map(i=>`<div class="confirm-item">${esc(i)}</div>`).join('');
-  g.innerHTML=`<div class="msg ai" style="align-items:flex-start"><div class="msg-avatar ai" style="margin-top:2px">SI</div><div class="confirm-block"><div class="confirm-title">⚡ Confirm before generating</div>${itemsHtml}<div class="confirm-actions"><button class="btn-ok" id="btnOk">Confirm & Generate</button><button class="btn-no" id="btnNo">Cancel</button></div></div></div>`;
+  g.innerHTML=`<div class="msg ai" style="align-items:flex-start"><div class="msg-avatar ai" style="margin-top:2px">SI</div><div class="confirm-block"><div class="confirm-title">â¡ Confirm before generating</div>${itemsHtml}<div class="confirm-actions"><button class="btn-ok" id="btnOk">Confirm & Generate</button><button class="btn-no" id="btnNo">Cancel</button></div></div></div>`;
   chat.appendChild(g);
   document.getElementById('btnOk').onclick=()=>{g.remove();onOk();};
   document.getElementById('btnNo').onclick=()=>{g.remove();onNo();};
@@ -332,7 +332,7 @@ async function callAI(prompt,driveContext){
 function buildPrompt(mode,text,client){
   const today=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
   const map={
-    report:`Generate a complete REPORT for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\nDATE: ${today}\nUse the full REPORT structure with ━━━ dividers.`,
+    report:`Generate a complete REPORT for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\nDATE: ${today}\nUse the full REPORT structure with âââ dividers.`,
     deck:`Generate a complete DECK BRIEF for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\nDATE: ${today}\nUse the full DECK BRIEF structure with slide-by-slide plan.`,
     plan:`Generate a complete MEDIA PLAN for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\nDATE: ${today}\nUse the full MEDIA PLAN structure including channel table.`,
     brief:`Generate a 1-page CLIENT STATUS BRIEF for:\nCLIENT: ${client||'Skyscale'}\nREQUEST: ${text}\nDATE: ${today}`,
@@ -356,7 +356,7 @@ async function sendMessage(){
   const searchTerm=text.replace(/^(REPORT:|DECK:|PLAN:|FIND:|BRIEF ME:)\s*/i,'').trim();
 
   if(mode==='find'){
-    appendThinking('Searching Drive…');
+    appendThinking('Searching Driveâ¦');
     const files=await callDrive(searchTerm);
     removeThinking();
     appendDriveResults(files,searchTerm);
@@ -364,36 +364,51 @@ async function sendMessage(){
   }
 
   if(mode==='chat'||mode==='brief'){
-    appendThinking(mode==='brief'?'Generating status brief…':'Thinking…');
+    appendThinking(mode==='brief'?'Generating status briefâ¦':'Thinkingâ¦');
     try{
       const reply=await callAI(buildPrompt(mode,text,client));
       removeThinking();
       mode==='chat'?appendSimpleMsg(esc(reply).replace(/\n/g,'<br>')):appendOutputBlock(modeLabels[mode],client||'Skyscale',reply);
-    }catch(e){removeThinking();appendSimpleMsg('⚠ Error: '+esc(e.message));}
+    }catch(e){removeThinking();appendSimpleMsg('â  Error: '+esc(e.message));}
     isThinking=false;document.getElementById('sendBtn').disabled=false;input.focus();return;
   }
 
-  // REPORT / DECK / PLAN — search Drive first, then confirm
-  appendThinking('Searching Drive…');
+  appendThinking('Searching Driveâ¦');
   const driveFiles=await callDrive(searchTerm);
   removeThinking();
 
-  // Show drive results alongside confirm
   if(driveFiles.length>0) appendDriveResults(driveFiles,searchTerm);
 
   appendConfirm([
     `Drive: ${driveFiles.length} file${driveFiles.length!==1?'s':''} found`,
     `Output Mode: ${modeLabels[mode]}`,
     `Client: ${client||'Not specified'}`,
-    `Request: ${text.substring(0,80)}${text.length>80?'…':''}`,
+    `Request: ${text.substring(0,80)}${text.length>80?'â¦':''}`,
   ],driveFiles,
   async()=>{
     isThinking=true;document.getElementById('sendBtn').disabled=true;
-    appendThinking('Generating '+modeLabels[mode]+'…');
-    try{
-      const reply=await callAI(buildPrompt(mode,text,client),driveFiles);
-      removeThinking();appendOutputBlock(modeLabels[mode],client||'Skyscale',reply);
-    }catch(e){removeThinking();appendSimpleMsg('⚠ Error: '+esc(e.message));}
+    if(mode==='deck'){
+      appendThinking('Building PowerPoint deckâ¦');
+      try{
+        const res=await fetch('/api/deck',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text,client:client||'Skyscale'})});
+        if(!res.ok) throw new Error('Deck API error '+res.status);
+        const blob=await res.blob();
+        const cd=res.headers.get('Content-Disposition')||'';
+        const fnMatch=cd.match(/filename="([^"]+)"/);
+        const filename=fnMatch?fnMatch[1]:'Skyscale_Deck.pptx';
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a');a.href=url;a.download=filename;a.click();
+        URL.revokeObjectURL(url);
+        removeThinking();
+        appendSimpleMsg('â <strong>'+esc(filename)+'</strong> downloaded â check your Downloads folder.');
+      }catch(e){removeThinking();appendSimpleMsg('â  Error: '+esc(e.message));}
+    } else {
+      appendThinking('Generating '+modeLabels[mode]+'â¦');
+      try{
+        const reply=await callAI(buildPrompt(mode,text,client),driveFiles);
+        removeThinking();appendOutputBlock(modeLabels[mode],client||'Skyscale',reply);
+      }catch(e){removeThinking();appendSimpleMsg('â  Error: '+esc(e.message));}
+    }
     isThinking=false;document.getElementById('sendBtn').disabled=false;input.focus();
   },
   ()=>{appendSimpleMsg('Cancelled.');isThinking=false;document.getElementById('sendBtn').disabled=false;updateBadge('chat');input.focus();}
